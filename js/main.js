@@ -15,6 +15,13 @@ function createPickerDOM(arrColors, varName){
   //선택자 안쪽의 내용을 지우고 tags문자열로 구성된 구조로 바꿔치기
   aside.innerHTML = tags;
 
+  let p = document.createElement("p");
+  p.innerHTML = `<input type="color"><button>색상 선택</button>`
+  aside.append(p)
+
+  // let tag = `<p><input type="color"><button>색상 선택</button></p>`
+  // document.body.aside.append(tag);
+
   //선택자.append(DOM): 선택자 안쪽에 DOM요소를 추가 삽입
   document.body.append(aside);
 
@@ -25,6 +32,17 @@ function createPickerDOM(arrColors, varName){
     btn.addEventListener('click', e=>{
       const selectedColor = e.currentTarget.style.backgroundColor;
       document.body.style.setProperty(varName, selectedColor);
+
+      // setCookie("pointColor", selectedColor, -1);
+      // setCookie("pointColor", selectedColor, 0);
     });
   });
+}
+
+function setCookie(name, value, expires){
+  let today = new Date();
+  let duedate = today.getDate() + expires;
+  today.setDate(duedate);
+
+  document.cookie = `${name}=${value};path=/;expires=${today.toString()}`
 }
