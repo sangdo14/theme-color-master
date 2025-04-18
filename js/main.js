@@ -2,7 +2,8 @@
 createPickerDOM(['orange', 'hotpink', 'cornflowerblue', 'violet', '#333'], '--pointColor');  
 
 function createPickerDOM(arrColors, varName){
-  // createElement가 반환하는 요소는 dom객체
+
+  // aside 객체
   let aside = document.createElement("aside");
   aside.classList.add("picker");
 
@@ -11,21 +12,21 @@ function createPickerDOM(arrColors, varName){
     tags += `<span style="background-color:${data}">${data}</span>`
   })
 
-  //innerHTML은 문자열 대입에서 동적태그 생성
-  //선택자 안쪽의 내용을 지우고 tags문자열로 구성된 구조로 바꿔치기
   aside.innerHTML = tags;
 
+  // p객체
   let p = document.createElement("p");
+  p.classList.add('palletGroup')
   p.innerHTML = `<input type="color"><button>색상 선택</button>`
+
+  // aside 객체에 p 추가
   aside.append(p)
 
-  // let tag = `<p><input type="color"><button>색상 선택</button></p>`
-  // document.body.aside.append(tag);
-
-  //선택자.append(DOM): 선택자 안쪽에 DOM요소를 추가 삽입
+  // body에 aside 추가
   document.body.append(aside);
 
-  //동적생성요소를 바로 가져와서 이벤트 연결까지 한 번에
+
+  // 첫번째 aside 버튼에 이벤트 추가
   const btns = document.querySelectorAll('.picker span');
 
   btns.forEach(btn => {
@@ -33,16 +34,13 @@ function createPickerDOM(arrColors, varName){
       const selectedColor = e.currentTarget.style.backgroundColor;
       document.body.style.setProperty(varName, selectedColor);
 
-      // setCookie("pointColor", selectedColor, -1);
-      // setCookie("pointColor", selectedColor, 0);
     });
   });
-}
 
-function setCookie(name, value, expires){
-  let today = new Date();
-  let duedate = today.getDate() + expires;
-  today.setDate(duedate);
-
-  document.cookie = `${name}=${value};path=/;expires=${today.toString()}`
+  // 두번째 aside 팔레트에 이벤트 추가
+  //children은 태그 안에 있는 돔을 모두 선택한다.
+  const [pallet, btn] = document.querySelector('.palletGroup').children;
+  btn.addEventListener("click", ()=>{
+  document.body.style.setProperty(varName, pallet.value);
+})
 }
